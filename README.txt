@@ -1,3 +1,5 @@
+pip install -r requirements.txt
+
 node importData.js
 
 python spark/recommender.py
@@ -8,10 +10,3 @@ start server: npm start
 start frontend: npm run dev
 
 
-dnspython  2.8.0
-numpy      2.3.5
-pip        22.3
-py4j       0.10.9.9
-pymongo    4.15.5
-pyspark    4.0.1
-setuptools 65.5.0
