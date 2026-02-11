@@ -1,12 +1,12 @@
 const fs = require('fs');
 const csv = require('csv-parser');
 const mongoose = require('mongoose');
-const Course = require('./models/Course');
+const Course = require('./Course');
 
 // Σύνδεση στη MongoDB (127.0.0.1 για Mac)
 mongoose.connect('mongodb://127.0.0.1:27017/coursesDB')
-  .then(() => console.log('✅ Συνδέθηκε επιτυχώς στη MongoDB'))
-  .catch(err => console.error('❌ Σφάλμα σύνδεσης:', err));
+  .then(() => console.log(' Συνδέθηκε επιτυχώς στη MongoDB'))
+  .catch(err => console.error(' Σφάλμα σύνδεσης:', err));
 
 // --- ΒΟΗΘΗΤΙΚΕΣ ΣΥΝΑΡΤΗΣΕΙΣ ---
 
@@ -27,10 +27,10 @@ const normalizeLevel = (text) => {
 const importUdemy = () => {
   return new Promise((resolve) => {
     const courses = [];
-    console.log('🔄 Διάβασμα Udemy CSV...');
+    console.log(' Διάβασμα Udemy CSV...');
     
     if (!fs.existsSync('udemy.csv')) {
-        console.log('⚠️ Το udemy.csv δεν βρέθηκε, παραλείπεται.');
+        console.log(' Το udemy.csv δεν βρέθηκε, παραλείπεται.');
         resolve();
         return;
     }
@@ -58,7 +58,7 @@ const importUdemy = () => {
       })
       .on('end', async () => {
         if (courses.length > 0) await Course.insertMany(courses);
-        console.log(`✅ Udemy: Προστέθηκαν ${courses.length} μαθήματα.`);
+        console.log(` Udemy: Προστέθηκαν ${courses.length} μαθήματα.`);
         resolve();
       });
   });
@@ -69,10 +69,10 @@ const importUdemy = () => {
 const importCoursera = () => {
   return new Promise((resolve) => {
     const courses = [];
-    console.log('🔄 Διάβασμα Coursera CSV...');
+    console.log(' Διάβασμα Coursera CSV...');
 
     if (!fs.existsSync('coursera.csv')) {
-        console.log('⚠️ Το coursera.csv δεν βρέθηκε, παραλείπεται.');
+        console.log(' Το coursera.csv δεν βρέθηκε, παραλείπεται.');
         resolve();
         return;
     }
@@ -114,7 +114,7 @@ const importCoursera = () => {
       })
       .on('end', async () => {
         if (courses.length > 0) await Course.insertMany(courses);
-        console.log(`✅ Coursera: Προστέθηκαν ${courses.length} μαθήματα.`);
+        console.log(` Coursera: Προστέθηκαν ${courses.length} μαθήματα.`);
         resolve();
       });
   });
@@ -123,13 +123,13 @@ const importCoursera = () => {
 // --- Full Import ---
 const run = async () => {
   try {
-    console.log('🗑️  Καθαρισμός παλιάς βάσης...');
+    console.log(' Καθαρισμός παλιάς βάσης...');
     await Course.deleteMany({});
     
     await importUdemy();     // Πηγή 1
     await importCoursera();  // Πηγή 2
 
-    console.log('🎉 ΟΛΑ ΕΤΟΙΜΑ! Το Harvesting ολοκληρώθηκε.');
+    console.log(' ΟΛΑ ΕΤΟΙΜΑ! Το Harvesting ολοκληρώθηκε.');
   } catch (err) {
     console.error('Fatal Error:', err);
   } finally {
